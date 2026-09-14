@@ -1,0 +1,18 @@
+# Binaries
+/llmtap
+/llmtap.exe
+/dist/
+
+# Local config and secrets — never commit these
+.env
+*.local.yaml
+configs/*.local.yaml
+
+# Go
+*.test
+*.out
+coverage.*
+
+# Editors
+.vscode/
+.idea/
