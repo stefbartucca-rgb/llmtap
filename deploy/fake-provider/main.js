@@ -8,6 +8,8 @@
 const http = require('http');
 
 const PORT = 19090;
+// The smoke test raises this so a short run is certain to see an error.
+const ERROR_RATE = Number(process.env.ERROR_RATE || 0.05);
 const MODELS = {
   openai: ['gpt-5-codex', 'gpt-5.2-codex', 'gpt-5'],
   anthropic: ['claude-sonnet-4-6', 'claude-opus-5', 'claude-haiku-4-5'],
@@ -86,7 +88,7 @@ http.createServer((req, res) => {
 
     // Roughly one call in twenty is rejected, so error.type shows up in the
     // dashboard instead of staying theoretical.
-    if (Math.random() < 0.05) {
+    if (Math.random() < ERROR_RATE) {
       res.writeHead(429, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: { type: 'rate_limit_error', message: 'rate limit exceeded' } }));
       return;
