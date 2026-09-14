@@ -1,7 +1,10 @@
 # syntax=docker/dockerfile:1
 
 # ---- build -----------------------------------------------------------------
-FROM golang:1.26-alpine AS build
+# The build stage always runs on the builder's own architecture and Go
+# cross-compiles for the target. Without --platform, a multi-arch build would
+# run the whole Go toolchain under QEMU for arm64, which is many times slower.
+FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS build
 
 WORKDIR /src
 
