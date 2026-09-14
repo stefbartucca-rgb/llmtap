@@ -1,0 +1,22 @@
+# Drop this into ~/.codex/config.toml to route Codex CLI through llmtap.
+#
+# Only the base URL changes. Codex keeps using your normal credentials, keeps
+# talking the Responses API, and behaves exactly as before — llmtap just gets
+# to watch.
+#
+# Verify it took effect: run a task, then look for a "chat gpt-5-codex" span in
+# Grafana. If nothing shows up, curl http://localhost:8080/healthz first.
+
+model_provider = "llmtap"
+
+[model_providers.llmtap]
+name = "OpenAI via llmtap"
+base_url = "http://localhost:8080/v1"
+
+# Codex defaults to the Responses API and llmtap speaks it. Leave this alone
+# unless you know the upstream only offers Chat Completions.
+wire_api = "responses"
+
+# The API key still comes from your environment; llmtap forwards the header
+# untouched and never records it.
+env_key = "OPENAI_API_KEY"
