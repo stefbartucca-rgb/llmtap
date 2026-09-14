@@ -16,6 +16,8 @@ services:
     command: ["node", "/app/main.js"]
     volumes:
       - ./fake-provider/main.js:/app/main.js:ro
+    environment:
+      ERROR_RATE: ${DEMO_ERROR_RATE:-0.05}
     restart: unless-stopped
 
   demo-traffic:
@@ -25,7 +27,7 @@ services:
       - ./fake-provider/traffic.js:/app/traffic.js:ro
     environment:
       LLMTAP_URL: http://llmtap:8080
-      INTERVAL_MS: "1500"
+      INTERVAL_MS: ${DEMO_INTERVAL_MS:-1500}
     depends_on:
       - llmtap
       - fake-provider
