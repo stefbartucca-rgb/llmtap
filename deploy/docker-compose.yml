@@ -36,25 +36,15 @@ services:
       - tempo
     restart: unless-stopped
 
-  # Tempo runs as uid 10001, but a fresh named volume is owned by root, so
-  # without this Tempo cannot create its WAL and exits. Same fix as Tempo's own
-  # compose examples.
-  tempo-init:
-    image: grafana/tempo:2.9.0
-    user: root
-    entrypoint: ["chown", "10001:10001", "/var/tempo"]
-    volumes:
-      - tempo-data:/var/tempo
-
   tempo:
     image: grafana/tempo:2.9.0
     command: ["-config.file=/etc/tempo/tempo.yaml"]
     volumes:
       - ./tempo.yaml:/etc/tempo/tempo.yaml:ro
+      # A named volume, not a bind mount: Docker seeds it from the image, where
+      # /var/tempo already belongs to Tempo's uid 10001. A host directory would
+      # be root-owned and need a chown first.
       - tempo-data:/var/tempo
-    depends_on:
-      tempo-init:
-        condition: service_completed_successfully
     restart: unless-stopped
 
   prometheus:
