@@ -69,6 +69,12 @@ einer Minute füllen. Es erfindet plausible Token-Zahlen und Cache-Treffer und
 lehnt etwa jeden zwanzigsten Aufruf ab, damit die Fehler-Panels nicht leer
 bleiben. Nichts verlässt den Rechner, nichts wird abgerechnet.
 
+Ob der Stack wirklich funktioniert, prüft `node deploy/smoke-test.js`, sobald
+er läuft. Das Skript schickt jede Panel-Abfrage durch Grafana und schlägt fehl,
+wenn ein Panel leer bleibt, ein Latenz-Quantil unplausibel ist oder ein
+Exemplar zu keinem Trace führt. Die CI führt dieselbe Prüfung bei jeder
+Änderung am Stack aus.
+
 ## Was dabei herauskommt
 
 Die Spans folgen den [OpenTelemetry-GenAI-Konventionen](https://github.com/open-telemetry/semantic-conventions-genai);

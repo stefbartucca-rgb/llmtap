@@ -67,6 +67,11 @@ It makes up plausible token counts and cache hits, and rejects roughly one call
 in twenty so the error panels have something to show. Nothing leaves the
 machine and nothing is billed.
 
+To check that the stack really works, run `node deploy/smoke-test.js` once it
+is up. It sends every panel query through Grafana and fails if a panel stays
+empty, if a latency quantile is implausible, or if an exemplar does not lead
+to a trace. CI runs the same check on every change that touches the stack.
+
 ## What you get
 
 Spans follow the [OpenTelemetry GenAI semantic

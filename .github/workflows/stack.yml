@@ -1,0 +1,51 @@
+name: Stack
+
+# Brings up the full deploy/ stack with the demo overlay and checks that the
+# dashboard actually shows data. Unit tests cannot catch a wrong metric name,
+# a histogram with useless buckets, or a broken exemplar link; this can.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "cmd/**"
+      - "internal/**"
+      - "configs/**"
+      - "deploy/**"
+      - "Dockerfile"
+      - "go.mod"
+      - "go.sum"
+      - ".github/workflows/stack.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      COMPOSE: docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.demo.yml
+      # More traffic and more failures than the demo default, so a short run
+      # is certain to populate every panel, the error panels included.
+      DEMO_INTERVAL_MS: "300"
+      DEMO_ERROR_RATE: "0.2"
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Start the stack
+        run: $COMPOSE up -d --build
+
+      - name: Check the dashboard
+        run: node deploy/smoke-test.js
+
+      - name: Show container state and logs
+        if: failure()
+        run: |
+          $COMPOSE ps -a
+          $COMPOSE logs --no-color --tail 200
+
+      - name: Tear down
+        if: always()
+        run: $COMPOSE down -v

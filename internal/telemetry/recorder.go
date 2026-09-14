@@ -43,19 +43,22 @@ func NewRecorder(tp trace.TracerProvider, mp metric.MeterProvider, pricer Pricer
 
 	tokenUsage, err := meter.Int64Histogram(metricTokenUsage,
 		metric.WithUnit("{token}"),
-		metric.WithDescription("Number of input and output tokens used."))
+		metric.WithDescription("Number of input and output tokens used."),
+		metric.WithExplicitBucketBoundaries(tokenUsageBuckets...))
 	if err != nil {
 		return nil, err
 	}
 	duration, err := meter.Float64Histogram(metricOpDuration,
 		metric.WithUnit("s"),
-		metric.WithDescription("Duration of a GenAI client operation."))
+		metric.WithDescription("Duration of a GenAI client operation."),
+		metric.WithExplicitBucketBoundaries(durationBuckets...))
 	if err != nil {
 		return nil, err
 	}
 	ttfc, err := meter.Float64Histogram(metricTimeToFirst,
 		metric.WithUnit("s"),
-		metric.WithDescription("Time to receive the first chunk of a streamed response."))
+		metric.WithDescription("Time to receive the first chunk of a streamed response."),
+		metric.WithExplicitBucketBoundaries(durationBuckets...))
 	if err != nil {
 		return nil, err
 	}

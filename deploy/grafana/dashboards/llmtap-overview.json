@@ -63,7 +63,7 @@
       "title": "Calls in range",
       "gridPos": { "h": 4, "w": 6, "x": 6, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0 }, "overrides": [] },
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "text" } }, "overrides": [] },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
       "targets": [
         {
@@ -80,7 +80,7 @@
       "title": "Tokens in range",
       "gridPos": { "h": 4, "w": 6, "x": 12, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0 }, "overrides": [] },
+      "fieldConfig": { "defaults": { "unit": "short", "decimals": 0, "color": { "mode": "fixed", "fixedColor": "text" } }, "overrides": [] },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "textMode": "value" },
       "targets": [
         {
