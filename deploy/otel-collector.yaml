@@ -1,0 +1,50 @@
+# Traces go to Tempo over OTLP; metrics are exposed for Prometheus to scrape.
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  # memory_limiter comes first so it can shed load before the batcher queues it.
+  memory_limiter:
+    check_interval: 1s
+    limit_percentage: 80
+    spike_limit_percentage: 20
+  batch:
+    timeout: 5s
+    send_batch_size: 1024
+
+exporters:
+  otlp/tempo:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    # Exemplars carry the trace ID into Prometheus, which is what makes a
+    # Grafana panel clickable through to the trace behind a spike.
+    enable_open_metrics: true
+    # Without this the exporter appends unit suffixes, and a unit like {token}
+    # produces names nobody can guess. Fixed names keep the dashboards honest.
+    add_metric_suffixes: false
+    resource_to_telemetry_conversion:
+      enabled: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlp/tempo]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]
+
+  telemetry:
+    logs:
+      level: info

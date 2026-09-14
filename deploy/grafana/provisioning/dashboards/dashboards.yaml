@@ -1,0 +1,15 @@
+apiVersion: 1
+
+providers:
+  - name: llmtap
+    orgId: 1
+    folder: llmtap
+    type: file
+    disableDeletion: false
+    # Edits in the UI are allowed, but the file on disk stays the source of
+    # truth and wins on restart.
+    allowUiUpdates: true
+    updateIntervalSeconds: 10
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: false
