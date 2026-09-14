@@ -1,0 +1,12 @@
+event: response.created
+data: {"type":"response.created","response":{"id":"resp_abc123","object":"response","model":"gpt-5-codex","status":"in_progress","usage":null}}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","item_id":"msg_1","delta":"Hello"}
+
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","item_id":"msg_1","delta":" world"}
+
+event: response.completed
+data: {"type":"response.completed","response":{"id":"resp_abc123","object":"response","model":"gpt-5-codex","status":"completed","incomplete_details":null,"usage":{"input_tokens":1024,"input_tokens_details":{"cached_tokens":768},"output_tokens":256,"total_tokens":1280}}}
+
