@@ -28,9 +28,12 @@ exporters:
     # Exemplars carry the trace ID into Prometheus, which is what makes a
     # Grafana panel clickable through to the trace behind a spike.
     enable_open_metrics: true
-    # Without this the exporter appends unit suffixes, and a unit like {token}
-    # produces names nobody can guess. Fixed names keep the dashboards honest.
-    add_metric_suffixes: false
+    # Dots become underscores, but no unit or _total suffixes are appended: a
+    # unit like {token} would otherwise produce names nobody can guess, and
+    # llmtap.cost.usd would turn into llmtap_cost_usd_total. Fixed names keep
+    # the dashboards honest. (This replaces add_metric_suffixes: false, which
+    # the exporter has deprecated.)
+    translation_strategy: UnderscoreEscapingWithoutSuffixes
     resource_to_telemetry_conversion:
       enabled: true
 

@@ -7,7 +7,9 @@ const EVERY_MS = Number(process.env.INTERVAL_MS || 1500);
 
 const ROUTES = [
   { path: '/v1/responses', body: () => ({ model: pick(['gpt-5-codex', 'gpt-5.2-codex']), stream: true, input: 'demo' }) },
-  { path: '/v1/chat/completions', body: () => ({ model: 'gpt-4.1', stream: true, messages: [{ role: 'user', content: 'demo' }] }) },
+  // Every model here must have an entry in configs/pricing.yaml, or its share
+  // of the traffic silently drops out of the spend panels.
+  { path: '/v1/chat/completions', body: () => ({ model: 'gpt-5', stream: true, messages: [{ role: 'user', content: 'demo' }] }) },
   { path: '/v1/messages', body: () => ({ model: pick(['claude-sonnet-4-6', 'claude-haiku-4-5']), stream: true, max_tokens: 1024, messages: [{ role: 'user', content: 'demo' }] }) },
 ];
 
