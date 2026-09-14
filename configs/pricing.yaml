@@ -1,0 +1,70 @@
+# llmtap price table — USD per 1,000,000 tokens.
+#
+# ---------------------------------------------------------------------------
+# VERIFY THESE NUMBERS BEFORE TRUSTING A COST DASHBOARD.
+#
+# The values below were collected from public pricing summaries on the date in
+# "updated" and are a starting point, not a source of truth. Rates change, they
+# differ by region and tier, and an enterprise agreement can change them
+# entirely. Check them against:
+#
+#   https://openai.com/api/pricing/
+#   https://www.anthropic.com/pricing
+#
+# A model that is absent from this table is not billed at zero — llmtap simply
+# does not report a cost for it, and logs the missing entry once.
+# ---------------------------------------------------------------------------
+
+version: 1
+updated: "2026-09-14"
+
+providers:
+  openai:
+    # Model names are matched case-insensitively, longest prefix first, so a
+    # dated snapshot such as gpt-5-codex-2026-03-01 resolves to gpt-5-codex.
+    gpt-5:
+      input: 1.25
+      cached_input: 0.125
+      output: 10.00
+    gpt-5-codex:
+      input: 1.25
+      cached_input: 0.125
+      output: 10.00
+    gpt-5.2-codex:
+      input: 1.75
+      cached_input: 0.175
+      output: 14.00
+    gpt-5.3-codex:
+      input: 1.75
+      cached_input: 0.175
+      output: 14.00
+    gpt-5.6-sol:
+      input: 4.00
+      cached_input: 0.40
+      output: 20.00
+    gpt-5.6-terra:
+      input: 2.00
+      cached_input: 0.20
+      output: 12.00
+    gpt-5.6-luna:
+      input: 0.20
+      cached_input: 0.02
+      output: 1.20
+
+  anthropic:
+    claude-opus-5:
+      input: 5.00
+      cached_input: 0.50
+      output: 25.00
+    claude-fable-5:
+      input: 10.00
+      cached_input: 1.00
+      output: 50.00
+    claude-sonnet-4-6:
+      input: 3.00
+      cached_input: 0.30
+      output: 15.00
+    claude-haiku-4-5:
+      input: 1.00
+      cached_input: 0.10
+      output: 5.00
