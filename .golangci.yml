@@ -14,11 +14,26 @@ linters:
     - revive
     - unconvert
     - usestdlibvars
+
   exclusions:
     rules:
-      # Table-driven tests read better without these.
+      # Table-driven tests read better without these, and the test harness
+      # closes response bodies through t.Cleanup, which bodyclose cannot see.
       - path: _test\.go
-        linters: [gosec, errcheck]
+        linters: [gosec, errcheck, bodyclose]
+
+      # Every package here is under internal/ and can never be imported from
+      # outside the module, so a doc comment on each one-line interface method
+      # is ceremony rather than documentation. Comments are still written where
+      # they explain something.
+      - linters: [revive]
+        text: "exported: .*should have comment"
+
+      # G101 matches on identifiers containing "token" and flags the OpenTelemetry
+      # attribute names for token counts. They are metric keys, not credentials.
+      - path: internal/telemetry/semconv\.go
+        linters: [gosec]
+        text: "G101"
 
 formatters:
   enable:

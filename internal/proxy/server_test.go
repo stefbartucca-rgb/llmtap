@@ -189,13 +189,13 @@ func TestCredentialsNeverReachTelemetry(t *testing.T) {
 
 	for _, span := range waitForSpans(t, h, 1) {
 		for _, attr := range span.Attributes() {
-			if strings.Contains(attr.Value.Emit(), secret) {
+			if strings.Contains(attr.Value.String(), secret) {
 				t.Errorf("attribute %s leaked the API key", attr.Key)
 			}
 		}
 		for _, event := range span.Events() {
 			for _, attr := range event.Attributes {
-				if strings.Contains(attr.Value.Emit(), secret) {
+				if strings.Contains(attr.Value.String(), secret) {
 					t.Errorf("event attribute %s leaked the API key", attr.Key)
 				}
 			}

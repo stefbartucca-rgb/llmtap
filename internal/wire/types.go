@@ -21,10 +21,12 @@ type Operation string
 
 const OperationChat Operation = "chat"
 
-// RequestInfo is what can be known before the call leaves for upstream.
+// RequestInfo is what can be known before the call leaves for upstream. The
+// tags are shared by all three wire formats, which is why one type covers
+// them.
 type RequestInfo struct {
-	Model  string
-	Stream bool
+	Model  string `json:"model"`
+	Stream bool   `json:"stream"`
 }
 
 // CallInfo accumulates everything observed about a single model call. A parser
