@@ -106,7 +106,6 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache' });
 
     let i = 0;
-    const firstChunkDelay = rnd(120, 900); // makes time_to_first_chunk meaningful
     const step = () => {
       if (i >= events.length) {
         res.end();
@@ -115,8 +114,10 @@ http.createServer((req, res) => {
       const [name, payload] = events[i++];
       const data = typeof payload === 'string' ? payload : JSON.stringify(payload);
       res.write(name ? `event: ${name}\ndata: ${data}\n\n` : `data: ${data}\n\n`);
-      setTimeout(step, i === 1 ? firstChunkDelay : rnd(40, 250));
+      setTimeout(step, rnd(40, 250));
     };
-    step();
+    // The wait goes before the first write, not after it: llmtap stamps
+    // time_to_first_chunk on the first body byte it sees.
+    setTimeout(step, rnd(120, 900));
   });
 }).listen(PORT, '0.0.0.0', () => console.error(`fake provider listening on :${PORT}`));
