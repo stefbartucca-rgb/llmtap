@@ -9,6 +9,10 @@ genau eine Änderung: seine Base-URL.
 
 *[English version](README.md)*
 
+![Das eingerichtete Grafana-Dashboard mit 15 Minuten Demo-Verkehr: oben Kosten, Aufrufe, Tokens und Fehlerquote, darunter Kostenrate, Token-Durchsatz, Aufrufdauer und Zeit bis zum ersten Chunk mit Exemplar-Punkten, Aufrufrate je Modell und Fehler nach Typ](docs/dashboard.png)
+
+*Das eingerichtete Dashboard nach 15 Minuten [Demo-Verkehr](#ausprobieren-ohne-api-key). Die Punkte in den Latenz-Panels sind Exemplars: Jeder öffnet den Trace des jeweiligen Aufrufs.*
+
 ```mermaid
 flowchart LR
     A["Codex CLI"] --> P
@@ -56,6 +60,20 @@ Für Codex CLI [`examples/codex/config.toml`](examples/codex/config.toml) nach
 
 Eine Aufgabe laufen lassen, dann <http://localhost:3000> öffnen und
 **llmtap — Model traffic** ansehen.
+
+### Nur der Proxy
+
+Wer schon einen Collector betreibt, nimmt statt eines eigenen Builds das
+fertige Image für linux/amd64 und linux/arm64:
+
+```bash
+docker run --rm -p 8080:8080 \
+  -e LLMTAP_OTLP_ENDPOINT=dein-collector:4318 \
+  ghcr.io/stefbartucca-rgb/llmtap:latest
+```
+
+Für alles, was länger laufen soll, besser ein Versions-Tag wie `0.1.0`
+festlegen; siehe [Releases](https://github.com/stefbartucca-rgb/llmtap/releases).
 
 ### Ausprobieren ohne API-Key
 
