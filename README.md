@@ -8,6 +8,10 @@ and latency metrics. The client needs one change: its base URL.
 
 *[Deutsche Fassung](README.de.md)*
 
+![The provisioned Grafana dashboard with 15 minutes of demo traffic: spend, calls, tokens and failure rate at the top, then spend rate, token throughput, call duration and time to first chunk with exemplar dots, call rate by model and errors by type](docs/dashboard.png)
+
+*The provisioned dashboard after 15 minutes of [demo traffic](#trying-it-without-an-api-key). The dots on the latency panels are exemplars: each one opens the trace of that call.*
+
 ```mermaid
 flowchart LR
     A["Codex CLI"] --> P
@@ -54,6 +58,20 @@ into `~/.codex/config.toml`. See [`examples/`](examples/) for the rest.
 
 Run a task, then open <http://localhost:3000> and look at **llmtap — Model
 traffic**.
+
+### Just the proxy
+
+If you already run a collector, use the published image for linux/amd64 and
+linux/arm64 instead of building:
+
+```bash
+docker run --rm -p 8080:8080 \
+  -e LLMTAP_OTLP_ENDPOINT=your-collector:4318 \
+  ghcr.io/stefbartucca-rgb/llmtap:latest
+```
+
+Pin a version tag such as `0.1.0` for anything longer-lived; see
+[releases](https://github.com/stefbartucca-rgb/llmtap/releases).
 
 ### Trying it without an API key
 
