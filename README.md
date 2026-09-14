@@ -55,6 +55,18 @@ into `~/.codex/config.toml`. See [`examples/`](examples/) for the rest.
 Run a task, then open <http://localhost:3000> and look at **llmtap — Model
 traffic**.
 
+### Trying it without an API key
+
+```bash
+docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.demo.yml up -d
+```
+
+The demo overlay swaps both upstreams for a local fake provider and drives a
+trickle of calls through the proxy, so the dashboards fill up within a minute.
+It makes up plausible token counts and cache hits, and rejects roughly one call
+in twenty so the error panels have something to show. Nothing leaves the
+machine and nothing is billed.
+
 ## What you get
 
 Spans follow the [OpenTelemetry GenAI semantic

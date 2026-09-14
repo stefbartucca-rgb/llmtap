@@ -1,0 +1,32 @@
+# Demo overlay: replaces the real providers with a local fake and drives a
+# trickle of traffic through the proxy, so the dashboards fill up without an
+# API key and without spending anything.
+#
+#   docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.demo.yml up -d
+#
+# Do not combine this with real credentials -- it redirects both upstreams.
+services:
+  llmtap:
+    environment:
+      LLMTAP_OPENAI_BASE_URL: http://fake-provider:19090
+      LLMTAP_ANTHROPIC_BASE_URL: http://fake-provider:19090
+
+  fake-provider:
+    image: node:22-alpine
+    command: ["node", "/app/main.js"]
+    volumes:
+      - ./fake-provider/main.js:/app/main.js:ro
+    restart: unless-stopped
+
+  demo-traffic:
+    image: node:22-alpine
+    command: ["node", "/app/traffic.js"]
+    volumes:
+      - ./fake-provider/traffic.js:/app/traffic.js:ro
+    environment:
+      LLMTAP_URL: http://llmtap:8080
+      INTERVAL_MS: "1500"
+    depends_on:
+      - llmtap
+      - fake-provider
+    restart: unless-stopped

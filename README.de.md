@@ -57,6 +57,18 @@ Für Codex CLI [`examples/codex/config.toml`](examples/codex/config.toml) nach
 Eine Aufgabe laufen lassen, dann <http://localhost:3000> öffnen und
 **llmtap — Model traffic** ansehen.
 
+### Ausprobieren ohne API-Key
+
+```bash
+docker compose -f deploy/docker-compose.yml -f deploy/docker-compose.demo.yml up -d
+```
+
+Das Demo-Overlay ersetzt beide Upstreams durch einen lokalen Fake-Provider und
+schickt laufend Aufrufe durch den Proxy, sodass sich die Dashboards binnen
+einer Minute füllen. Es erfindet plausible Token-Zahlen und Cache-Treffer und
+lehnt etwa jeden zwanzigsten Aufruf ab, damit die Fehler-Panels nicht leer
+bleiben. Nichts verlässt den Rechner, nichts wird abgerechnet.
+
 ## Was dabei herauskommt
 
 Die Spans folgen den [OpenTelemetry-GenAI-Konventionen](https://github.com/open-telemetry/semantic-conventions-genai);
