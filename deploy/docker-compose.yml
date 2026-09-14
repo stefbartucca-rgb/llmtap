@@ -76,9 +76,10 @@ services:
     image: grafana/grafana:12.3.0
     environment:
       # A local, disposable stack: no login prompt in the way of the demo.
+      # Anonymous access is read-only -- Grafana 12 ignores any other role
+      # here. To edit dashboards, sign in as admin/admin.
       GF_AUTH_ANONYMOUS_ENABLED: "true"
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Admin
-      GF_AUTH_DISABLE_LOGIN_FORM: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
       GF_FEATURE_TOGGLES_ENABLE: traceqlEditor
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
